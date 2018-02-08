@@ -1,0 +1,90 @@
+nvelocity
+http://nvelocity.codeplex.com/
+
+参考：
+http://www.bkjia.com/C_jc/819119.html
+https://www.bbsmax.com/A/amd0MmM2zg/
+
+http://www.171u.com/c/32/32918.html
+
+C# nvelocity
+https://www.bbsmax.com/A/gAJGvGvXzZ/
+
+T4-mysql
+http://www.it610.com/article/3609487.htm
+
+java veloity
+http://www.cnblogs.com/zhuYears/archive/2012/02/29/2373491.html
+
+PD UML
+http://blog.csdn.net/tianlesoftware/article/details/6879229
+
+C# IO
+https://www.cnblogs.com/liyangLife/p/4797583.html
+
+jdbc链接串
+http://blog.csdn.net/master_yao/article/details/51518592
+
+db：
+mysql
+mssql
+oracl
+
+
+velocity
+
+sqlserver2008实体单文件
+
+
+http://www.it610.com/article/3609487.htm
+=============全局================
+db类型
+连接串
+
+----------------------mssql-----------------------------
+SELECT A.object_id AS TableId,A.name AS TableName,B.value AS TableCName 
+			FROM sys.tables AS A
+			LEFT JOIN sys.extended_properties AS B
+			ON A.object_id=B.major_id
+			WHERE B.minor_id=0
+
+
+SELECT  T.name AS table_name ,
+			T.object_id AS tableid,
+			ISNULL(CONVERT(VARCHAR(MAX), E.value), '') AS table_name_c ,
+			C.name AS field_name ,
+			ISNULL(CONVERT(VARCHAR(MAX), D.value), '') AS field_name_c ,
+			ROW_NUMBER() OVER(PARTITION BY T.name ORDER BY C.colid) AS field_sequence ,
+			TYPE_NAME(C.xtype) AS date_type ,
+			(CASE WHEN EXISTS ( SELECT   1
+			FROM     sysobjects
+			WHERE    xtype = 'PK'
+			AND name IN (
+			SELECT  name
+			FROM    sysindexes
+			WHERE   id = C.id
+			AND indid IN (
+			SELECT  indid
+			FROM    sysindexkeys
+			WHERE   id = C.id
+			AND colid = C.colid ) ) )
+			THEN 1
+			ELSE 0
+			END) AS pk ,
+			ISNULL(C.isnullable, 1) AS isnullable ,
+			ISNULL(COLUMNPROPERTY(c.id, c.name, 'IsIdentity'), 0) AS isidentity
+			FROM   sys.tables AS T
+			LEFT JOIN syscolumns AS C ON c.id = T.object_id
+			LEFT JOIN sys.extended_properties AS D ON D.major_id = T.object_id
+			AND D.minor_id = C.colid
+			AND D.major_id = C.id
+			LEFT JOIN sys.extended_properties AS E ON E.major_id = T.object_id
+			AND E.minor_id = 0
+		WHERE T.object_id IN ('245575913')
+
+
+-------------------------------------------------------
+
+
+
+

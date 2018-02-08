@@ -1,0 +1,13 @@
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\bin\Debug\Generator.exe
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\bin\Debug\Generator.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\bin\Debug\NVelocity.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\bin\Debug\NVelocity.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\obj\Debug\Generator.Properties.Resources.resources
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\obj\Debug\Generator.csproj.GenerateResource.Cache
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\obj\Debug\Generator.exe
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\obj\Debug\Generator.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\bin\Debug\Newtonsoft.Json.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\bin\Debug\NVelocity.xml
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\obj\Debug\Generator.frmGenerateMain.resources
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\bin\Debug\MySql.Data.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\obj\Debug\Generator.csprojResolveAssemblyReference.cache

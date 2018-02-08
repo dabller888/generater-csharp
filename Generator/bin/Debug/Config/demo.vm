@@ -1,0 +1,22 @@
+﻿${owner}：您的 ${bill} 号${type}在 ${date} 已支付
+
+
+
+
+
+#foreach($col in $TableColumns)
+        public string $col.ColumnName { get; set; }
+    #end
+
+
+
+
+
+        <#
+        PushIndent("        ");
+        foreach (DataColumn dc in ds.Tables[0].Columns) 
+        {
+            WriteLine("public " + dc.DataType.Name+ (dc.AllowDBNull && dc.DataType.Name.ToLower() != "string" ? "? ": " ") + dc.ColumnName + " { get; set; }");
+        }
+        PopIndent();
+        #>

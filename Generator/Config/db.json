@@ -1,0 +1,30 @@
+﻿[
+	{
+		"DbType": "mssql",
+		// "ConnStr":"Data Source=192.168.1.171;Initial Catalog=myoa;Persist Security Info=True;User ID=sa;Password=sa123456",
+		"Server": "192.168.1.171",
+		"Port": "1433",
+		"DbName": "myoa",
+		"User": "sa",
+		"Passwd": "sa123456",
+		"Enable": true
+	},
+	{
+		"DbType": "mysql",
+		"Server": "192.168.1.171",
+		"Port": "3306",
+		"DbName": "myoa",
+		"User": "sa",
+		"Passwd": "sa123456",
+		"Enable": false
+	},
+	{
+		"DbType": "oracle",
+		"Server": "192.168.1.171",
+		"Port": "3306",
+		"DbName": "myoa",
+		"User": "sa",
+		"Passwd": "sa123456",
+		"Enable": false
+	}
+]

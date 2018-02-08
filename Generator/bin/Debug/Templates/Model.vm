@@ -1,0 +1,11 @@
+using System;
+namespace QY.Stage.Frameworks.Model {    
+    /// <summary>
+    /// $table.TableName
+    /// </summary>
+    public partial class $table.TableName {
+    #foreach($col in $columns)
+    public $col.CSharpType $col.ColumnName { get; set; }
+    #end
+    }
+}

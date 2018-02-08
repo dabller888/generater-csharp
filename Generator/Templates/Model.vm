@@ -1,0 +1,23 @@
+//-----------------------------------------------------------------------
+// <copyright file=" $table.TableName.cs" company="xxxx Enterprises">
+// * Copyright (C) <#= copyright #>
+// * version : <#= version #>
+// * author  : <#= author #>
+// * FileName: $table.TableName.cs
+// * history : Created by T4 <#= DateTime.Now #> 
+// </copyright>
+//-----------------------------------------------------------------------
+using System;
+namespace QY.Stage.Frameworks.Model {    
+    /// <summary>
+    /// $table.TableName Entity Model
+    /// </summary>
+    public partial class $table.TableName {
+    #foreach($col in $columns)
+	/// <summary>
+    /// $col.Remark
+    /// </summary>
+    public $col.CSharpType $col.ColumnName { get; set; }
+    #end
+    }
+}

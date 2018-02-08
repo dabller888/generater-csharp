@@ -1,0 +1,10 @@
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\bin\Release\Generator.exe
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\bin\Release\Generator.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\bin\Release\NVelocity.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\bin\Release\NVelocity.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\obj\Release\Generator.csprojResolveAssemblyReference.cache
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\obj\Release\Generator.Form1.resources
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\obj\Release\Generator.Properties.Resources.resources
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\obj\Release\Generator.csproj.GenerateResource.Cache
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\obj\Release\Generator.exe
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Generator\obj\Release\Generator.pdb
