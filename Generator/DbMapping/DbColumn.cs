@@ -10,6 +10,8 @@ namespace Generator.DbMapping {
         public int ColumnID { set; get; }
         public bool IsPrimaryKey { set; get; }
         public string ColumnName { set; get; }
+        public string UpperColumnName { set; get; }
+        public string LowerColumnName { set; get; }
         public string ColumnType { set; get; }
         public string CSharpType {
             get {
@@ -37,8 +39,8 @@ namespace Generator.DbMapping {
                 return map.MapCommonType(ColumnType);
             }
         }
-        public int ByteLength { set; get; }
-        public int CharLength { set; get; }
+        public long ByteLength { set; get; }
+        public long CharLength { set; get; }
         public int Scale { set; get; }
         public bool IsIdentity { set; get; }
         public bool IsNullable { set; get; }

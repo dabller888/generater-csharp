@@ -41,7 +41,15 @@ namespace Generator {
                 dbHelper = new MysqlDbHelper();
             } else if ("oracle" == ConfigInfo.GetDbType().ToLower()) {
                 dbHelper = new OracleDbHelper();
+            } else {
+                throw new Exception("db.json do not enable db setting");            
             }
+        }
+
+        private CopyrightInfo SetCopyrightInfo() {
+            CopyrightInfo info = ConfigInfo.GetCopyrightInfo();
+            info.CreteTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            return info;
         }
         #endregion
 
@@ -62,9 +70,10 @@ namespace Generator {
                 List<DbTable> tables = dbHelper.GetDbTables();
                 foreach (DbTable t in tables) {
                     ht = new Hashtable();
+                    ht["copyright"] = SetCopyrightInfo();
                     ht["table"] = t;
                     ht["columns"] = dbHelper.GetTableColumns(t.TableName);
-                    string outFile = string.Format(@"{0}\{1}.cs", outDir, t.TableName);
+                    string outFile = string.Format(@"{0}\{1}.cs", outDir, t.UpperTableName);
                     FileGen.GetFile(file.FullName, ht, outFile);
                 }
             }

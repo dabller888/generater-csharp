@@ -1,22 +1,24 @@
 ﻿[
 	{
 		"DbType": "mssql",
-		// "ConnStr":"Data Source=192.168.1.171;Initial Catalog=myoa;Persist Security Info=True;User ID=sa;Password=sa123456",
-		"Server": "192.168.1.171",
+		// "ConnStr":"Data Source=192.168.0.198;Initial Catalog=myoa;Persist Security Info=True;User ID=sa;Password=sa123456",
+		"Server": "192.168.0.198",
 		"Port": "1433",
 		"DbName": "myoa",
 		"User": "sa",
 		"Passwd": "sa123456",
-		"Enable": true
+		"Prefix": "",
+		"Enable": false
 	},
 	{
 		"DbType": "mysql",
-		"Server": "192.168.1.171",
+		"Server": "127.0.0.1",
 		"Port": "3306",
-		"DbName": "myoa",
-		"User": "sa",
-		"Passwd": "sa123456",
-		"Enable": false
+		"DbName": "wordpress",
+		"User": "root",
+		"Passwd": "root",
+		"Prefix": "wp_",
+		"Enable": true
 	},
 	{
 		"DbType": "oracle",
@@ -25,6 +27,7 @@
 		"DbName": "myoa",
 		"User": "sa",
 		"Passwd": "sa123456",
+		"Prefix": "",
 		"Enable": false
 	}
 ]

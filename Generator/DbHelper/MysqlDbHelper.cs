@@ -11,25 +11,28 @@ namespace Generator.DbHelper {
     public class MysqlDbHelper : IDbHelper {
         #region 访问mysql数据库
         public static DataTable GetDataTable(string connectionString, string commandText, params MySqlParameter[] parms) {
-            using (MySqlConnection connection = new MySqlConnection(connectionString)) {
-                MySqlCommand command = connection.CreateCommand();
-                command.CommandText = commandText;
-                command.Parameters.AddRange(parms);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+            try {
+                using (MySqlConnection connection = new MySqlConnection(connectionString)) {
+                    MySqlCommand command = connection.CreateCommand();
+                    command.CommandText = commandText;
+                    command.Parameters.AddRange(parms);
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(command);
 
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
 
-                return dt;
+                    return dt;
+                }
+            } catch (MySqlException ex) {
+                throw new Exception("mysql process exception", ex);
             }
         }
-
         #endregion
 
         public List<DbTable> GetDbTables(string tables = null) {
             string sql = string.Format(@"select t2.TABLE_SCHEMA as schemname,
               t2.TABLE_NAME as tablename,
-              t2.TABLE_ROWS as rows,
+              IFNULL(t2.TABLE_ROWS,0) as rows,
               t2.TABLE_COMMENT as comment,
               (
                 select (case when count(*)>0 then 1 else 0 end)
@@ -50,6 +53,7 @@ namespace Generator.DbHelper {
             for (int i = 0; i < dt.Rows.Count; i++) {
                 t = new DbTable();
                 t.TableName = dt.Rows[i]["tablename"].ToString();
+                t.UpperTableName = ConfigInfo.ToUpper(dt.Rows[i]["tablename"].ToString());
                 t.SchemaName = dt.Rows[i]["schemname"].ToString();
                 t.Rows = Convert.ToInt32(dt.Rows[i]["rows"]);
                 t.HasPrimaryKey = Convert.ToBoolean(dt.Rows[i]["primarykey"]);
@@ -100,11 +104,13 @@ where t3.SCHEMA_NAME='{0}' and t2.TABLE_NAME='{1}'", ConfigInfo.GetDbName(), tab
                 col.ColumnID = Convert.ToInt32(dt.Rows[i]["ColumnID"]);
                 col.IsPrimaryKey = Convert.ToBoolean(dt.Rows[i]["IsPrimaryKey"]);
                 col.ColumnName = dt.Rows[i]["ColumnName"].ToString();
+                col.UpperColumnName = ConfigInfo.ToUpper(dt.Rows[i]["ColumnName"].ToString(), false);
+                col.LowerColumnName = ConfigInfo.ToLower(dt.Rows[i]["ColumnName"].ToString(), false);
                 col.ColumnType = dt.Rows[i]["ColumnType"].ToString();
                 col.IsIdentity = Convert.ToBoolean(dt.Rows[i]["IsIdentity"]);
                 col.IsNullable = Convert.ToBoolean(dt.Rows[i]["IsNullable"]);
-                col.ByteLength = Convert.ToInt32(dt.Rows[i]["ByteLength"]);
-                col.CharLength = string.IsNullOrEmpty(dt.Rows[i]["CharLength"].ToString()) ? 0 : Convert.ToInt32(dt.Rows[i]["CharLength"]);
+                col.ByteLength = Convert.ToInt64(dt.Rows[i]["ByteLength"]);
+                col.CharLength = string.IsNullOrEmpty(dt.Rows[i]["CharLength"].ToString()) ? 0 : Convert.ToInt64(dt.Rows[i]["CharLength"]);
                 col.Scale = string.IsNullOrEmpty(dt.Rows[i]["Scale"].ToString()) ? 0 : Convert.ToInt32(dt.Rows[i]["Scale"]);
                 col.Remark = dt.Rows[i]["Remark"].ToString();
                 cols.Add(col);

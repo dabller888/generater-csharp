@@ -1,11 +1,20 @@
+//-----------------------------------------------------------------------
+// <copyright file=" {$table.UpperTableName}.cs" company="$copyright.Company Enterprises">
+// * Copyright (C) $copyright.Copyright
+// * version : $copyright.Version
+// * author  : $copyright.Author
+// * FileName: {$table.UpperTableName}.cs
+// * history : $copyright.CreteTime
+// </copyright>
+//-----------------------------------------------------------------------
 using System;
 namespace QY.Stage.Frameworks.Model {    
     /// <summary>
-    /// $table.TableName
+    /// $table.UpperTableName Entity Model
     /// </summary>
-    public partial class $table.TableName {
-    #foreach($col in $columns)
-    public $col.CSharpType $col.ColumnName { get; set; }
-    #end
-    }
+    public partial class $table.UpperTableName {
+	#foreach($col in $columns)
+	public $col.CSharpType $col.UpperColumnName { get; set; }
+	#end
+}
 }

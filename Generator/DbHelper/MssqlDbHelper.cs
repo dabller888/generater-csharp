@@ -53,6 +53,7 @@ namespace Generator.DbHelper {
             DataTable dt = GetDataTable(sql);
             return dt.Rows.Cast<DataRow>().Select(row => new DbTable {
                 TableName = row.Field<string>("tablename"),
+                UpperTableName = ConfigInfo.ToUpper(row.Field<string>("tablename")),
                 SchemaName = row.Field<string>("schemname"),
                 Rows = row.Field<int>("rows"),
                 HasPrimaryKey = row.Field<bool>("HasPrimaryKey")
@@ -104,6 +105,8 @@ namespace Generator.DbHelper {
                 ColumnID = row.Field<int>("ColumnID"),
                 IsPrimaryKey = row.Field<bool>("IsPrimaryKey"),
                 ColumnName = row.Field<string>("ColumnName"),
+                UpperColumnName = ConfigInfo.ToUpper(row.Field<string>("ColumnName"),false),
+                LowerColumnName = ConfigInfo.ToLower(row.Field<string>("ColumnName"),false),
                 ColumnType = row.Field<string>("ColumnType"),
                 IsIdentity = row.Field<bool>("IsIdentity"),
                 IsNullable = row.Field<bool>("IsNullable"),

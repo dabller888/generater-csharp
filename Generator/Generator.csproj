@@ -102,6 +102,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="Templates\demo.vm" />
+    <None Include="Templates\Model - 复制.vm" />
     <None Include="Templates\Model.vm" />
   </ItemGroup>
   <ItemGroup>
