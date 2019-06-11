@@ -1,0 +1,289 @@
+#set($JQ="$")
+#set($JJ="#")
+#set($PK="")
+#foreach($col in $columns)
+    #if($col.IsPrimaryKey=="True")
+        #set($PK="$col.ColumnName")
+    #end
+#end
+
+@using Newtonsoft.Json;
+@using QY.Stage.PocoModel;
+
+@*-----列表-----*@
+<div>
+    <table id="test"></table>
+</div>
+
+@*-----添加层-----*@
+<div id="AddDialog" class="easyui-dialog" style="width:400px;height:300px;padding:10px" iconcls="icon-save" closed="true" resizable="true" modal="true" buttons="J${JJ}dlg-buttons" align="center">
+    <form id="AddForm" method="post" novalidate="novalidate">
+        <table id="AddTable">
+#foreach($col in $columns)
+#if($col.IsPrimaryKey=="False")
+            <tr>
+                <th><label for="$col.ColumnName">$col.ColumnName</label></th>
+#if($col.ColumnType=="varchar")
+    #if($col.IsNullable=="True")
+        #if($col.CharLength>1000)
+            <td><input class="easyui-textbox" id="$col.ColumnName" name="$col.ColumnName" style="width:90%;height:30px;" data-options="validType:'length[1,$col.CharLength"',multiline:true" /></td>
+        #else
+<td><input class="easyui-textbox" id="$col.ColumnName" name="$col.ColumnName" data-options="validType:'length[1,$col.CharLength]'" /></td>
+        #end
+    #else
+        #if($col.CharLength>1000)
+            <td><input class="easyui-textbox" id="$col.ColumnName" name="$col.ColumnName" style="width:90%;height:30px;" data-options="required:true,validType:'length[1,$col.CharLength]',multiline:true" /></td>
+        #else
+<td><input class="easyui-textbox" id="$col.ColumnName" name="$col.ColumnName" data-options="required:true,validType:'length[1,$col.CharLength]'" /></td>
+        #end
+    #end
+#else
+            <td><input class="easyui-textbox" id="$col.ColumnName" name="$col.ColumnName" data-options="required:true,validType:'length[1,$col.CharLength]'" /></td>
+#end
+        </tr>
+#end
+#end
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnRegist" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript: ${JQ}('${JJ}AddDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+
+@*-----修改层-----*@
+<div id="UpdateDialog" class="easyui-dialog" style="width:400px;height:300px;padding:10px" iconcls="icon-save" closed="true" resizable="true" modal="true" buttons="${JJ}dlg-buttons" align="center">
+    <form id="UpdateForm" method="post" novalidate="novalidate">
+        <table id="UpdateTable">
+#foreach($col in $columns)
+#if($col.IsPrimaryKey=="False")
+<tr>
+<th><label for="$col.ColumnName">$col.ColumnName</label></th>
+#if($col.ColumnType=="varchar")
+    #if($col.IsNullable=="True")
+        #if($col.CharLength>1000)
+            <td><input class="easyui-textbox" id="m$col.ColumnName" name="m$col.ColumnName" style="width:90%;height:30px;" data-options="validType:'length[1,$col.CharLength"',multiline:true" /></td>
+        #else
+            <td><input class="easyui-textbox" id="m$col.ColumnName" name="m$col.ColumnName" data-options="validType:'length[1,$col.CharLength]'" /></td>
+        #end
+    #else
+        #if($col.CharLength>1000)
+            <td><input class="easyui-textbox" id="m$col.ColumnName" name="m$col.ColumnName" style="width:90%;height:30px;" data-options="required:true,validType:'length[1,$col.CharLength]',multiline:true" /></td>
+        #else
+            <td><input class="easyui-textbox" id="m$col.ColumnName" name="m$col.ColumnName" data-options="required:true,validType:'length[1,$col.CharLength]'" /></td>
+        #end
+    #end
+#else
+    <td><input class="easyui-textbox" id="m$col.ColumnName" name="m$col.ColumnName" data-options="required:true,validType:'length[1,$col.CharLength]'" /></td>
+#end
+</tr>
+#end
+#end
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <input type="hidden" id="m$PK" name="m$PK" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnUpdate" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:${JQ}('${JJ}UpdateDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript">
+    ${JQ}(function () {
+        initTable();
+        bindEvents();
+    });
+
+    //初始化表格
+    function initTable(queryData) {
+        ${JQ}('${JJ}test').datagrid({
+            title: '管理',
+            iconCls: 'icon-more',
+            height: 600,
+            width:'100%',
+            nowrap: true,
+            autoRowHeight: false,
+            striped: true,
+            collapsible: false,
+            url: '/Back/$table.UpperTableName/List',
+            sortName: '$PK',
+            sortOrder: 'asc',
+            //striped:true,
+            border: true,
+            remoteSort: false,
+            idField: '$PK',
+            pagination: true,
+            rownumbers: false,
+            queryParams: queryData,
+            columns: [[
+                { field: 'ck', checkbox: true },
+            #foreach($col in $columns)
+                #if($velocityCount == $columns.size()+(-1))
+                    { field: '$col.ColumnName', title: '$col.Remark', width: 80, sortable: true }
+                    #break
+                #end
+                #if($col.IsPrimaryKey=="True")
+                    { field: '$col.ColumnName', title: '$col.Remark', width: 80, hidden: true },
+                #else
+                    { field: '$col.ColumnName', title: '$col.Remark', width: 80, sortable: true },
+                #end
+            #end
+            ]],
+            toolbar: [{
+                id: 'btnAdd',
+                text: '添加',
+                iconCls: 'icon-add',
+                handler: function () {
+                    ShowAddDialog();
+                }
+            }, '-', {
+                id: 'btnEdit',
+                text: '修改',
+                iconCls: 'icon-edit',
+                handler: function () {
+                    ShowUpdateDialog();
+                }
+            }, '-', {
+                id: 'btnDelete',
+                text: '删除',
+                iconCls: 'icon-remove',
+                handler: function () {
+                    DeleteByIds();
+                }
+            }],
+            onBeforeLoad: function () {                
+                var userActions = JSON.parse("@JsonConvert.SerializeObject(Session[(Session["UserInfo"] as SysUser).LoginName + "action"])".replace(/&quot;/g, "\""));
+                var actions = JSON.parse("@JsonConvert.SerializeObject(Session["action"])".replace(/&quot;/g, "\""));
+                user.renderActions(userActions,actions);
+            }
+        });
+        ${JQ}("${JJ}test").datagrid("clearSelections");
+    }
+
+    function ShowAddDialog() {
+        ${JQ}('${JJ}AddDialog').dialog('open').dialog('setTitle', '添加信息');
+        ClearTextBox();
+    }
+    function ClearTextBox() {        
+        #foreach($col in $columns)
+            #if($col.IsPrimaryKey=="False")                
+                ${JQ}('${JJ}$col.ColumnName').textbox('setValue','');
+            #end
+        #end
+    }
+    function DeleteByIds() {
+        var items = ${JQ}("${JJ}test").datagrid("getSelections");
+        if (items.length >= 1) {
+            var ids = "";
+            for (var i = 0; i < items.length; i++) {
+                ids += items[i].$PK + ",";
+            }
+            ids = ids.substring(0, ids.length - 1);
+            ${JQ}.messager.confirm("删除信息", "您确认删除所选项吗？", function (flag) {
+                if (flag) {
+                    ${JQ}.post("/Back/$table.UpperTableName/Delete", { ${PK}s: ids }, function (data) {
+                        if (data.Code == 1) {
+                            ${JQ}.messager.alert("友情提示", "删除成功", "success");
+                            ${JQ}("${JJ}test").datagrid("reload");
+                            ${JQ}("${JJ}test").datagrid("clearSelections");
+                        }
+                        else {
+                            ${JQ}.messager.alert("友情提示", "删除失败:" + data, "warning");
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            ${JQ}.messager.alert("友情提示", "请您选择要删除的数据", "warning");
+        }
+    }
+
+    function ShowUpdateDialog() {
+        var items = ${JQ}("${JJ}test").datagrid("getSelections");
+        if (items.length == 1) {
+            ${JQ}("${JJ}UpdateDialog").dialog("open").dialog("setTitle", "修改信息");
+            //渲染表单
+            var checkId = ${JQ}("${JJ}test").datagrid("getSelections")[0].$PK;
+            ${JQ}.getJSON("/Back/$table.UpperTableName/Detail", { $PK: checkId }, function (data) {
+                if (data.Code == 1) {
+                    ${JQ}("${JJ}u$PK").val(checkId);
+                    #foreach($col in $columns)
+                        #if($col.IsPrimaryKey=="False")
+                            ${JQ}('${JJ}m$col.ColumnName').textbox('setValue',data.Content."$col.ColumnName");
+                        #end
+                    #end		
+                } else {
+                    ${JQ}.messager.alert("友情提示", "没有找到相关项!", "warning");
+                }
+            });
+        }
+        else {
+            ${JQ}.messager.alert("友情提示", "每次只能修改一行数据，你已经选择了<font color='red' size='6'>" + items.length + "</font>行", "warning");
+        }
+    }
+
+    function bindEvents() {
+        //添加
+        ${JQ}("${JJ}btnRegist").click(function () {
+            var valid = ${JQ}('${JJ}AddForm').form('validate');
+            if (valid == false) {
+                return false;
+            }
+            ${}.post("/Back/$table.UpperTableName/Add", {
+                #foreach($col in $columns)                
+                    #if($velocityCount == $columns.size()+(-1))
+                        $col.ColumnName: ${JQ}('${JJ}$col.ColumnName').textbox('getValue')
+                        #break
+                    #end
+                    #if($col.IsPrimaryKey=="False")
+                        $col.ColumnName: ${JQ}('${JJ}$col.ColumnName').textbox('getValue'),
+                    #end
+                #end
+            }, function (data) {
+                if (data.Code == 1) {
+                    ${JQ}.messager.alert("友情提示", "添加成功!", "success");
+                    ${JQ}('${JJ}AddDialog').dialog('close');
+                    ${JQ}("${JJ}test").datagrid("reload");
+                    ${JQ}("${JJ}test").datagrid("clearSelections");
+                } else {
+                    ${JQ}.messager.alert("友情提示", "添加失败，请您检查!", "error");
+                }
+            });
+        });
+
+        //修改
+        ${JQ}("${JJ}btnUpdate").click(function () {
+            var valid = ${JQ}('${JJ}UpdateForm').form('validate');
+            if (valid == false) {
+                return false;
+            }
+            ${JQ}.post("/Back/$table.UpperTableName/Save", {
+                #foreach($col in $columns)                
+                    #if($velocityCount == $columns.size()+(-1))
+                        $col.ColumnName: ${JQ}('${JJ}m$col.ColumnName').textbox('getValue')
+                        #break
+                    #end
+                    #if($col.IsPrimaryKey=="False")
+                        $col.ColumnName: ${JQ}('${JJ}m$col.ColumnName').textbox('getValue'),
+                    #else
+                        $PK: ${JQ}('${JJ}$col.ColumnName').val(),
+                    #end
+                #end
+            }, function (data) {
+                if (data.Code == 1) {
+                    ${JQ}.messager.alert("友情提示", "修改成功!", "success");
+                    ${JQ}("${JJ}UpdateRoleDialog").dialog('close');
+                    ${JQ}("${JJ}test").datagrid('reload');
+                    ${JQ}("${JJ}test").datagrid("clearSelections");
+                } else {
+                    ${JQ}.messager.alert("友情提示", "修改失败，请您检查!", "error");
+                }
+            });
+        });
+    }
+</script>

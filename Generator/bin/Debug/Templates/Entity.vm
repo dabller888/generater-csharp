@@ -1,0 +1,37 @@
+//-----------------------------------------------------------------------
+// <copyright file=" {$table.UpperTableName}.cs" company="$copyright.Company Enterprises">
+// * Copyright (C) $copyright.Copyright
+// * version : $copyright.Version
+// * author  : $copyright.Author
+// * FileName: {$table.UpperTableName}.cs
+// * history : $copyright.CreteTime
+// </copyright>
+//-----------------------------------------------------------------------
+#set($null="")
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+namespace QY.Stage.Frameworks.Model {    
+    /// <summary>
+    /// $table.UpperTableName Entity Model
+    /// </summary>
+	[Table("$table.UpperTableName")]
+    public partial class $table.UpperTableName {
+	#foreach($col in $columns)		
+#if($col.IsPrimaryKey=="True")
+	[Key]
+#end
+#if($col.CommonType.IsValueType=="True" && $col.IsNullable=="True")
+	#set($null="?")
+#else
+	#set($null="")
+#end
+##处理第一行\t
+#if($velocityCount==1)
+		public $col.CSharpType$null $col.UpperColumnName { get; set; }
+#else
+	public $col.CSharpType$null $col.UpperColumnName { get; set; }
+#end	
+	#end
+}
+}

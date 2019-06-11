@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using QY.Stage.PocoModel;
+using QY.Stage.ViewModel;
+using QY.Stage.Frameworks.DAL;
+
+namespace QY.Stage.Frameworks.BLL {
+    public partial class ${table.UpperTableName}Service {
+		private readonly ${table.UpperTableName}Repository dao = new ${table.UpperTableName}Repository();
+
+        public int Add(${table.UpperTableName} model) {
+            return dao.Add(model);
+        }
+
+        public ${table.UpperTableName} Get($tools.GetPKParams($table.TableName)) {
+            return dao.GetEntity($tools.GetPKExpression($table.TableName));
+        }
+
+        public ${table.UpperTableName} Get(Expression<Func<${table.UpperTableName},bool>> query) {
+            return dao.GetEntity(query);
+        }
+
+        public int Update(${table.UpperTableName} model) {
+            return dao.Update(model, null);
+        }
+        public int Delete(List<int> ids) {
+            //改成根据主键一次性删除
+            int rows = 0;
+            foreach (var id in ids) {
+                rows += dao.Remove(new ${table.UpperTableName}() { $tools.GetPKs($table.TableName) = id });
+            }
+            return rows;
+        }
+        public List<${table.UpperTableName}> GetAllList() {
+            return dao.GetList(m => true);
+        }
+
+        public List<${table.UpperTableName}> GetPageList(${table.UpperTableName}Request query) {
+            int total = 0;
+            List<${table.UpperTableName}> list = dao.GetListOrder($tools.GetPKQExpression($table.TableName), $tools.GetSortExpression($table.TableName), true, query.PageSize, query.PageIndex, out total);
+            query.TotalCount = total;
+            return list;
+        }
+    }
+}

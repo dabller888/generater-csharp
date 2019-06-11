@@ -1,0 +1,15 @@
+#set($type=' ')
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+namespace QY.Stage.ViewModel {
+    public class ${table.UpperTableName}Request : PageRequest {
+#foreach($col in $columns)
+#if($col.CommonType.IsValueType=="True" && $col.IsNullable=="True" )
+#set($type='? ')
+#end
+    public $col.CSharpType $type $col.ColumnName { get; set; }
+#end
+    }
+}    

@@ -26,6 +26,7 @@
             this.btnGenerateCode = new System.Windows.Forms.Button();
             this.rtbContent = new System.Windows.Forms.RichTextBox();
             this.pbTask = new System.Windows.Forms.ProgressBar();
+            this.btnGenDict = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnGenerateCode
@@ -53,11 +54,22 @@
             this.pbTask.Size = new System.Drawing.Size(458, 23);
             this.pbTask.TabIndex = 2;
             // 
+            // btnGenDict
+            // 
+            this.btnGenDict.Location = new System.Drawing.Point(12, 467);
+            this.btnGenDict.Name = "btnGenDict";
+            this.btnGenDict.Size = new System.Drawing.Size(75, 23);
+            this.btnGenDict.TabIndex = 3;
+            this.btnGenDict.Text = "生成数据字典";
+            this.btnGenDict.UseVisualStyleBackColor = true;
+            this.btnGenDict.Click += new System.EventHandler(this.btnGenDict_Click);
+            // 
             // frmGenerateMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(576, 462);
+            this.ClientSize = new System.Drawing.Size(576, 502);
+            this.Controls.Add(this.btnGenDict);
             this.Controls.Add(this.pbTask);
             this.Controls.Add(this.rtbContent);
             this.Controls.Add(this.btnGenerateCode);
@@ -75,6 +87,7 @@
         private System.Windows.Forms.Button btnGenerateCode;
         private System.Windows.Forms.RichTextBox rtbContent;
         private System.Windows.Forms.ProgressBar pbTask;
+        private System.Windows.Forms.Button btnGenDict;
     }
 }
 

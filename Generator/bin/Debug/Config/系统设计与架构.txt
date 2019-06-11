@@ -1,0 +1,38 @@
+微服务：
+数据安全 token
+并发（多线程）
+数据一致性 （消息）
+
+
+ssm/sss
+
+spring boot
+spring cloud
+layuiadmin
+----------------------------------------------------------------
+1.spring mvc
+2.spring jdbc
+3.spring
+4.spring boot
+5.spring cloud
+6.spring security
+7.mybatis
+8.hibernate
+9.shiro
+
+
+
+spring boot+mybatis+shiro  quartz这个计划任务
+
+
+
+springboot
+http://blog.csdn.net/wangb_java/article/details/76725193
+
+maven
+http://mvnrepository.com/search?q=mybatis
+
+加解密
+
+
+

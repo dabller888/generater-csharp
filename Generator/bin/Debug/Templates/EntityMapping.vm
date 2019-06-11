@@ -1,0 +1,47 @@
+//-----------------------------------------------------------------------
+// <copyright file=" {$table.UpperTableName}Configuration.cs" company="$copyright.Company Enterprises">
+// * Copyright (C) $copyright.Copyright
+// * version : $copyright.Version
+// * author  : $copyright.Author
+// * FileName: {$table.UpperTableName}.cs
+// * history : $copyright.CreteTime
+// </copyright>
+//-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data.Entity.ModelConfiguration;
+namespace QY.Stage.PocoModel.Configurations { 
+    public class ${table.UpperTableName}Configuration : EntityTypeConfiguration<$table.UpperTableName> {
+		public ${table.UpperTableName}Configuration() {
+#foreach($col in $columns)
+#if($velocityCount==1)
+			// Primary Key
+#end		
+#if($col.IsPrimaryKey=="True")
+			this.HasKey(t => t.$col.ColumnName);
+#end
+#end
+
+#foreach($col in $columns)
+#if($velocityCount==1)
+			// Properties
+#end
+#if($col.IsNullable=="False")
+#set($str="this.Property(t => t.$col.ColumnName).IsRequired()")
+#if($col.CommonType == "System.String")
+#set($str=$str+".HasMaxLength($col.CharLength)")
+#end
+			$str;
+#end
+#end
+
+			// Table && Column Mappings
+			this.ToTable("$table.TableName");
+	#foreach($col in $columns)
+		this.Property(t => t.$col.ColumnName).HasColumnName("$col.ColumnName")
+	#end		
+		}
+    }
+}

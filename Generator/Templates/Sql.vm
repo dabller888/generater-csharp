@@ -1,0 +1,14 @@
+
+#set($str ="")
+#foreach($col in $columns)
+#if("$col.IsPrimaryKey"=="True")
+	#if("$col.IsIdentity"=="True")	
+alter table $table.UpperTableName add $col.ColumnName int identity(1,1)
+	#end
+	#set($str = $str + $col.ColumnName+",")
+#end
+#end
+#if($str!="")
+#set($str=$str.SubString(0,$str.Length))
+alter table $table.UpperTableName add constraint PK_$table.UpperTableName primary key nonclustered($str)
+#end

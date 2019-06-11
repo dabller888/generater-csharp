@@ -1,0 +1,21 @@
+//-----------------------------------------------------------------------
+// <copyright file=" {$table.UpperTableName}Repository.cs" company="$copyright.Company Enterprises">
+// * Copyright (C) $copyright.Copyright
+// * version : $copyright.Version
+// * author  : $copyright.Author
+// * FileName: {$table.UpperTableName}.cs
+// * history : $copyright.CreteTime
+// </copyright>
+//-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Data.Entity;
+using QY.Stage.PocoModel;
+namespace QY.Stage.Frameworks.DAL {
+    public class ${table.UpperTableName}Repository : BaseRepository<$table.UpperTableName> {
+        
+    }
+}  

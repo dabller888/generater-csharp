@@ -1,0 +1,145 @@
+#set($PKCount=0)
+#set($KCount=0)
+#set($PKS=$tools.GetPKs($table.TableName))
+#foreach($col in $columns)
+    #if($col.IsPrimaryKey=="True")
+    #set($PKCount=$PKCount+1)
+    #end
+    #set($KCount=$KCount+1)
+#end
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+using QY.Stage.Frameworks.Utility;
+using QY.Stage.ViewModel;
+using QY.Stage.PocoModel;
+using QY.Stage.Frameworks.BLL;
+
+namespace QY.Stage.Web.Areas.Back.Controllers {
+    public class ${table.UpperTableName}Controller : Controller {
+		private readonly ${table.UpperTableName}Service $tools.ToLower($table.TableName)Service = new ${table.UpperTableName}Service();
+
+		#region /****View Action****/
+        public ActionResult Index() {
+            return View();
+        }
+        #endregion
+
+		#region /****Go Action****/
+		[HttpPost]
+		public ActionResult List() {
+            string pageIndex = Request["page"] ?? "1";
+            string pageSize = Request["rows"] ?? "10";
+
+            ${table.UpperTableName}Request query = new ${table.UpperTableName}Request();
+            query.PageIndex = int.Parse(pageIndex);
+            query.PageSize = int.Parse(pageSize);
+            query.TotalCount = 0;
+            var rows = from u in $tools.ToLower($table.TableName)Service.GetPageList(query)
+                       select new { $tools.GetQueryColumns($table.TableName) };
+            int total = query.TotalCount;
+            return Json(new { total = total, rows = rows }, JsonRequestBehavior.DenyGet);        
+        }
+
+		[HttpPost]
+		public ActionResult Detail($tools.GetPKParams($table.TableName)) {
+            var $tools.ToLower($table.TableName) = $tools.ToLower($table.TableName)Service.Get($tools.GetPKs($table.TableName));
+            var result = new ResponseParams();
+            if (elder == null) {
+                result.Code = ResponseCode.ERROR;
+                result.Message = string.Empty;
+                result.Content = string.Empty;
+            } else {
+                result.Code = ResponseCode.SUCCESS;
+                result.Message = string.Empty;
+                result.Content = $tools.ToLower($table.TableName);
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+		[HttpPost]
+		public ActionResult Add(${table.TableName}Request query) {
+            var result = new ResponseParams();
+            var $tools.ToLower($table.TableName) = new $table.TableName {
+#foreach($col in $columns)
+    #if($col.IsPrimaryKey=="False")
+        #if($velocityCount == $KCount)
+    $col.ColumnName = query.$col.ColumnName
+        #else
+    $col.ColumnName = query.$col.ColumnName,
+        #end
+    #end
+#end
+            };
+            if ($tools.ToLower($table.TableName)Service.Add($tools.ToLower($table.TableName)) > 0) {
+                result.Code = ResponseCode.SUCCESS;
+                result.Message = "添加成功!";
+                result.Content = null;
+            } else {
+                result.Code = ResponseCode.ERROR;
+                result.Message = "添加失败!";
+                result.Content = null;
+            }
+            return Json(result, JsonRequestBehavior.DenyGet);
+        }
+
+		[HttpPost]
+		public ActionResult Save(${table.TableName}Request query) {
+            var result = new ResponseParams();
+            var $tools.ToLower($table.TableName) = new $table.TableName {
+#foreach($col in $columns)
+        #if($velocityCount == $KCount)
+    $col.ColumnName = query.$col.ColumnName
+        #else    
+    $col.ColumnName = query.$col.ColumnName,
+        #end
+#end
+            };
+            ##var _$tools.ToLower($table.TableName) = $tools.ToLower($table.TableName)Service.Get(m => m.${PKS} == query.${PKS});
+            if (_$tools.ToLower($table.TableName) != null) { }
+            if ($tools.ToLower($table.TableName)Service.Update($tools.ToLower($table.TableName)) > 0) {
+                result.Code = ResponseCode.SUCCESS;
+                result.Message = "修改成功!";
+                result.Content = null;
+            } else {
+                result.Code = ResponseCode.ERROR;
+                result.Message = "修改失败!";
+                result.Content = null;
+            }
+            return Json(result,JsonRequestBehavior.DenyGet);
+        }
+
+		[HttpPost]
+		public ActionResult Delete(string ${PKS}s) {
+            var result = new ResponseParams();
+            if (!String.IsNullOrEmpty(${PKS}s)) {
+                List<int> _${PKS}s = new List<int>();
+                if (${PKS}s.IndexOf(",") >= 0) {
+                    string[] ids = ${PKS}s.Split(new char[] { ',' });
+                    foreach (var id in ids) {
+                        _${PKS}s.Add(Convert.ToInt32(id));
+                    }
+                } else {
+                    _${PKS}s.Add(Convert.ToInt32(UserIds));
+                }
+                if ($tools.ToLower($table.TableName)Service.Delete(userIds) > 0) {
+                    result.Code = ResponseCode.SUCCESS;
+                    result.Message = "删除成功!";
+                } else {
+                    result.Code = ResponseCode.ERROR;
+                    result.Message = "删除失败!";
+                }
+            }
+            return Json(result, JsonRequestBehavior.DenyGet);
+        }
+        #endregion
+
+		#region /****the other****/
+
+		#endregion
+    }
+}    
